@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { HolderService } from './holder.service';
 import { CreateHolderDto } from './dto/create-holder.dto';
@@ -16,6 +18,7 @@ export class HolderController {
   constructor(private readonly holderService: HolderService) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   create(@Body() createHolderDto: CreateHolderDto) {
     return this.holderService.create(createHolderDto);
   }
@@ -25,12 +28,8 @@ export class HolderController {
     return this.holderService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.holderService.findOne(+id);
-  }
-
   @Patch(':id')
+  @UsePipes(ValidationPipe)
   update(@Param('id') id: string, @Body() updateHolderDto: UpdateHolderDto) {
     return this.holderService.update(+id, updateHolderDto);
   }
